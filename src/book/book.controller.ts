@@ -2,6 +2,10 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { BookService } from './book.service';
 import { BooksMockData, IBooks } from './fakeDatabase';
 import { randomUUID } from 'crypto';
+import {
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+} from '@nestjs/swagger';
 
 @Controller('book')
 export class BookController {
@@ -18,6 +22,10 @@ export class BookController {
   }
 
   @Post()
+  @ApiCreatedResponse({
+    description: 'The professor has been created successfully.',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal error server.' })
   addBook(@Body() book: Partial<IBooks>): IBooks {
     if (!book.author || !book.publicationYear || !book.title) {
       return undefined;
